@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - darks.co</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="assets/js/main.js" defer></script>
+</head>
+<body>
+<canvas id="bg-animation"></canvas>
+    <!-- Header -->
+    <header class="main-header fade-in">
+        <div class="logo">
+            <img src="assets/images/logo.png" alt="darks.co logo">
+            darks.co
+        </div>
+        <nav>
+            <div class="menu-toggle" id="menu-toggle">☰</div>
+            <ul id="nav-links">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="cart.html">Cart 🛒</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Contact Section -->
+    <section class="contact-section">
+        <h1>Contact Us</h1>
+        <p>Have a question or want to get in touch? Fill out the form below and we’ll get back to you as soon as possible.</p>
+
+        <form id="contact-form">
+            <div class="form-group">
+                <label for="name">Full Name*</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address*</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="message">Your Message*</label>
+                <textarea id="message" name="message" rows="4" required></textarea>
+            </div>
+
+            <button type="submit" class="btn">Send Message</button>
+        </form>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 darks.co. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.getElementById("contact-form").addEventListener("submit", function(e) {
+            e.preventDefault();
+            alert("Thank you for contacting us! We'll reply soon.");
+            this.reset();
+        });
+    </script>
+
+</body>
+</html>
+<!-- Contact Section -->
+<section class="contact-section fade-in">
+    <h1>Contact Us</h1>
+    <p>Have a question or want to get in touch? Fill out the form below.</p>
+    <form id="contact-form">
+        <!-- Form fields -->
+    </form>
+</section>
