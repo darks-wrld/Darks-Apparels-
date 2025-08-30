@@ -3,44 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - darks.co</title>
+    <title>Admin Panel - darks.co</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="container">
-        <h1>Admin Panel</h1>
+        <header class="admin-header">
+            <h1>Admin Panel</h1>
+            <button id="logout-btn" class="btn" style="background: #d9534f;">Logout</button>
+        </header>
 
-        <!-- Add Product Form -->
-        <div class="form-container">
-            <h2>Add New Product</h2>
-            <form id="add-product-form">
-                <div class="form-group">
-                    <label for="product-name">Product Name</label>
-                    <input type="text" id="product-name" required>
+        <nav class="tabs">
+            <button class="tab-link active" data-tab="dashboard">Dashboard</button>
+            <button class="tab-link" data-tab="products">Products</button>
+            <button class="tab-link" data-tab="orders">Orders</button>
+            <button class="tab-link" data-tab="messages">Messages</button>
+            <button class="tab-link" data-tab="settings">Settings</button>
+        </nav>
+
+        <!-- Tab Content -->
+        <div id="dashboard" class="tab-content active">
+            <h2>Dashboard</h2>
+            <div class="dashboard-grid">
+                <div class="chart-container">
+                    <h3>Orders Overview</h3>
+                    <canvas id="orders-chart"></canvas>
                 </div>
-                <div class="form-group">
-                    <label for="product-price">Price</label>
-                    <input type="number" id="product-price" required>
+                <div class="chart-container">
+                    <h3>Product Categories</h3>
+                    <canvas id="products-chart"></canvas>
                 </div>
-                <div class="form-group">
-                    <label for="product-image">Image URL</label>
-                    <input type="text" id="product-image" required>
-                </div>
-                <div class="form-group">
-                    <label for="product-category">Category</label>
-                    <select id="product-category" required>
-                        <option value="clothes">Clothes</option>
-                        <option value="accessories">Accessories</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn">Add Product</button>
-            </form>
+            </div>
         </div>
 
-        <!-- Orders List -->
-        <div class="orders-container">
+        <div id="products" class="tab-content">
+            <h2>Add New Product</h2>
+            <div class="form-container">
+                <form id="add-product-form">
+                    <div class="form-group">
+                        <label for="product-name">Product Name</label>
+                        <input type="text" id="product-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="product-price">Price</label>
+                        <input type="number" id="product-price" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="product-image">Image URL</label>
+                        <input type="text" id="product-image" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="product-category">Category</label>
+                        <select id="product-category" required>
+                            <option value="clothes">Clothes</option>
+                            <option value="accessories">Accessories</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn">Add Product</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="orders" class="tab-content">
             <h2>Recent Orders</h2>
             <div id="orders-list"></div>
+        </div>
+
+        <div id="messages" class="tab-content">
+            <h2>Customer Messages</h2>
+            <div id="messages-list"></div>
+        </div>
+
+        <div id="settings" class="tab-content">
+            <h2>Settings</h2>
+            <div class="form-container">
+                <h3>Change Password</h3>
+                <form id="change-password-form">
+                    <div class="form-group">
+                        <label for="old-password">Old Password</label>
+                        <input type="password" id="old-password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-password">New Password</label>
+                        <input type="password" id="new-password" required>
+                    </div>
+                    <button type="submit" class="btn">Change Password</button>
+                    <p id="password-change-response" style="margin-top: 10px;"></p>
+                </form>
+            </div>
         </div>
     </div>
 
