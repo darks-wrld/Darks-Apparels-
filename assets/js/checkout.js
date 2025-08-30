@@ -1,36 +1,56 @@
-// Load cart total from localStorage
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
-const checkoutTotal = document.getElementById("checkout-total");
+document.addEventListener('DOMContentLoaded', () => {
+    const checkoutForm = document.getElementById('checkout-form');
+    const checkoutTotal = document.getElementById('checkout-total');
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-function calculateTotal() {
-    let total = 0;
-    cart.forEach(item => {
-        total += item.price * item.quantity;
-    });
-    checkoutTotal.textContent = `₵${total.toFixed(2)}`;
-}
-calculateTotal();
-
-// Handle order form submission
-document.getElementById("checkout-form").addEventListener("submit", function(e) {
-    e.preventDefault();
-
-    if (cart.length === 0) {
-        alert("Your cart is empty. Add items before checking out.");
-        return;
+    // Calculate and display total
+    function updateTotal() {
+        const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+        if (checkoutTotal) {
+            checkoutTotal.textContent = `₵${total.toFixed(2)}`;
+        }
+        return total;
     }
 
-    const name = document.getElementById("name").value;
-    const phone = document.getElementById("phone").value;
-    const address = document.getElementById("address").value;
-    const payment = document.getElementById("payment").value;
+    updateTotal();
 
-    // Simulate order confirmation
-    alert(`Thank you ${name}! Your order has been placed.\nWe will contact you at ${phone}.`);
+    // Handle form submission
+    if (checkoutForm) {
+        checkoutForm.addEventListener('submit', (e) => {
+            e.preventDefault();
 
-    // Clear cart after order
-    localStorage.removeItem("cart");
+            if (cart.length === 0) {
+                alert('Your cart is empty. Add items before checking out.');
+                return;
+            }
 
-    // Redirect back to home
-    window.location.href = "index.html";
+            const formData = new FormData(checkoutForm);
+            const orderData = {
+                name: formData.get('name'),
+                phone: formData.get('phone'),
+                address: formData.get('address'),
+                payment: formData.get('payment'),
+                cart: cart,
+                total: updateTotal(),
+            };
+
+            fetch('http://localhost:5000/api/orders', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(orderData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(`Thank you ${data.name}! Your order has been placed.`);
+                localStorage.removeItem('cart');
+                window.location.href = 'index.html';
+            })
+            .catch(error => {
+                console.error('Error placing order:', error);
+                alert('There was an error placing your order. Please try again.');
+            });
+        });
+    }
 });

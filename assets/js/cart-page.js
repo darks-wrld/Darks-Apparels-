@@ -3,16 +3,11 @@ let cart = JSON.parse(localStorage.getItem("cart")) || [];
 const cartItemsContainer = document.getElementById("cart-items");
 const cartTotal = document.getElementById("cart-total");
 
-// Render cart
+// Display cart items
 function renderCart() {
+    if (!cartItemsContainer) return;
     cartItemsContainer.innerHTML = "";
     let total = 0;
-
-    if (cart.length === 0) {
-        cartItemsContainer.innerHTML = "<p>Your cart is empty 🛒</p>";
-        cartTotal.textContent = "₵0.00";
-        return;
-    }
 
     cart.forEach((item, index) => {
         const itemTotal = item.price * item.quantity;
@@ -21,9 +16,10 @@ function renderCart() {
         const cartItem = document.createElement("div");
         cartItem.classList.add("cart-item");
         cartItem.innerHTML = `
+            <img src="assets/images/${item.name.toLowerCase().replace(/\s+/g, '')}.jpg" alt="${item.name}">
             <div class="cart-item-details">
-                <span class="cart-item-name">${item.name}</span>
-                <span class="cart-item-price">₵${item.price.toFixed(2)}</span>
+                <div class="cart-item-name">${item.name}</div>
+                <div class="cart-item-price">₵${item.price.toFixed(2)}</div>
             </div>
             <div class="cart-quantity">
                 <button onclick="updateQuantity(${index}, -1)">-</button>
@@ -35,7 +31,9 @@ function renderCart() {
         cartItemsContainer.appendChild(cartItem);
     });
 
-    cartTotal.textContent = `₵${total.toFixed(2)}`;
+    if (cartTotal) {
+        cartTotal.textContent = `₵${total.toFixed(2)}`;
+    }
 }
 
 // Update quantity
