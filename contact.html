@@ -18,16 +18,16 @@
         <nav>
             <div class="menu-toggle" id="menu-toggle">☰</div>
             <ul id="nav-links">
-                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="index.html">Home</a></li>
                 <li><a href="shop.html">Shop</a></li>
                 <li><a href="cart.html">Cart 🛒</a></li>
-                <li><a href="contact.html">Contact</a></li>
+                <li><a href="contact.html" class="active">Contact</a></li>
             </ul>
         </nav>
     </header>
 
     <!-- Contact Section -->
-    <section class="contact-section">
+    <section class="contact-section fade-in">
         <h1>Contact Us</h1>
         <p>Have a question or want to get in touch? Fill out the form below and we’ll get back to you as soon as possible.</p>
 
@@ -48,6 +48,7 @@
             </div>
 
             <button type="submit" class="btn">Send Message</button>
+            <p id="form-response" style="margin-top: 15px; text-align: center;"></p>
         </form>
     </section>
 
@@ -57,20 +58,40 @@
     </footer>
 
     <script>
-        document.getElementById("contact-form").addEventListener("submit", function(e) {
+        document.getElementById("contact-form").addEventListener("submit", async function(e) {
             e.preventDefault();
-            alert("Thank you for contacting us! We'll reply soon.");
-            this.reset();
+            const form = e.target;
+            const formData = new FormData(form);
+            const responseElement = document.getElementById('form-response');
+
+            const data = {
+                name: formData.get('name'),
+                email: formData.get('email'),
+                message: formData.get('message'),
+            };
+
+            try {
+                const response = await fetch('/api/messages', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
+                });
+
+                if (response.ok) {
+                    responseElement.textContent = "Thank you for your message! We'll get back to you soon.";
+                    responseElement.style.color = 'green';
+                    form.reset();
+                } else {
+                    responseElement.textContent = 'There was an error sending your message. Please try again.';
+                    responseElement.style.color = 'red';
+                }
+            } catch (error) {
+                console.error('Contact form error:', error);
+                responseElement.textContent = 'An unexpected error occurred. Please try again later.';
+                responseElement.style.color = 'red';
+            }
         });
     </script>
 
 </body>
 </html>
-<!-- Contact Section -->
-<section class="contact-section fade-in">
-    <h1>Contact Us</h1>
-    <p>Have a question or want to get in touch? Fill out the form below.</p>
-    <form id="contact-form">
-        <!-- Form fields -->
-    </form>
-</section>
